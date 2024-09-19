@@ -1,7 +1,9 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { AnswerService } from './answer.service';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { RequireLogin, UserInfo } from '@app/common';
+import { AnswerAddDto } from './dto/answer-add.dto';
 
 @Controller()
 export class AnswerController {
@@ -13,6 +15,12 @@ export class AnswerController {
   @Get()
   async getHello() {
     const value = await firstValueFrom(this.examClient.send('sum', [1, 3, 5]));
-    return this.answerService.getHello() + ' ' + value;
+    return value;
+  }
+
+  @Post('add')
+  @RequireLogin()
+  async add(@Body() addDto: AnswerAddDto, @UserInfo('userId') userId: number) {
+    return this.answerService.add(addDto, userId);
   }
 }
