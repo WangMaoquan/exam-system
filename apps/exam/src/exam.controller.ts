@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ExamService } from './exam.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { RequireLogin, UserInfo } from '@app/common';
@@ -22,7 +30,13 @@ export class ExamController {
 
   @Get('list')
   @RequireLogin()
-  async list(@UserInfo('userId') userId: number) {
-    return this.examService.list(userId);
+  async list(@UserInfo('userId') userId: number, @Query('bin') bin: string) {
+    return this.examService.list(userId, bin);
+  }
+
+  @Delete('delete/:id')
+  @RequireLogin()
+  async del(@UserInfo('userId') userId: number, @Param('id') id: string) {
+    return this.examService.delete(userId, +id);
   }
 }
