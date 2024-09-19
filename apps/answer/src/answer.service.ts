@@ -25,4 +25,28 @@ export class AnswerService {
       },
     });
   }
+
+  async list(examId: number) {
+    return this.prismaService.answer.findMany({
+      where: {
+        examId,
+      },
+      include: {
+        exam: true,
+        answerer: true,
+      },
+    });
+  }
+
+  async find(id: number) {
+    return this.prismaService.answer.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        exam: true,
+        answerer: true,
+      },
+    });
+  }
 }

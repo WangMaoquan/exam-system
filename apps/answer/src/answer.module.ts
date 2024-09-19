@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { AnswerController } from './answer.controller';
 import { AnswerService } from './answer.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AuthGuard, CommonModule } from '@app/common';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -14,8 +16,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+    CommonModule,
   ],
   controllers: [AnswerController],
-  providers: [AnswerService],
+  providers: [
+    AnswerService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AnswerModule {}

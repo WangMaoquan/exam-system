@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { AnswerService } from './answer.service';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
@@ -22,5 +31,20 @@ export class AnswerController {
   @RequireLogin()
   async add(@Body() addDto: AnswerAddDto, @UserInfo('userId') userId: number) {
     return this.answerService.add(addDto, userId);
+  }
+
+  @Get('list')
+  @RequireLogin()
+  async list(@Query('examId') examId: string) {
+    if (!examId) {
+      throw new BadRequestException('examId 不能为空');
+    }
+    return this.answerService.list(+examId);
+  }
+
+  @Get('find/:id')
+  @RequireLogin()
+  async find(@Param('id') id: string) {
+    return this.answerService.find(+id);
   }
 }
