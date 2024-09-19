@@ -20,4 +20,12 @@ export class ExamService {
       },
     });
   }
+
+  async list(userId: number) {
+    return this.prismaService.exam.findMany({
+      where: {
+        createUserId: userId,
+      },
+    });
+  }
 }

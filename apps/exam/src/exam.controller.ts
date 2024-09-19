@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ExamService } from './exam.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { RequireLogin, UserInfo } from '@app/common';
@@ -18,5 +18,11 @@ export class ExamController {
   @RequireLogin()
   async add(@Body() dto: ExamAddDto, @UserInfo('userId') userId: number) {
     return this.examService.add(dto, userId);
+  }
+
+  @Get('list')
+  @RequireLogin()
+  async list(@UserInfo('userId') userId: number) {
+    return this.examService.list(userId);
   }
 }
