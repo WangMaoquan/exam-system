@@ -58,4 +58,16 @@ export class ExamService {
       },
     });
   }
+
+  async publish(userId: number, id: number) {
+    return this.prismaService.exam.update({
+      where: {
+        id,
+        createUserId: userId,
+      },
+      data: {
+        isPublish: true,
+      },
+    });
+  }
 }

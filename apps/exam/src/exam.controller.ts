@@ -46,4 +46,10 @@ export class ExamController {
   async save(@Body() dto: ExamSaveDto) {
     return this.examService.save(dto);
   }
+
+  @Get('publish/:id')
+  @RequireLogin()
+  async publish(@UserInfo('userId') userId: number, @Param('id') id: string) {
+    return this.examService.publish(userId, +id);
+  }
 }
