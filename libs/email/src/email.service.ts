@@ -8,8 +8,8 @@ export class EmailService {
 
   constructor(private configService: ConfigService) {
     this.transporter = createTransport({
-      host: 'smtp.qq.com',
-      port: 587,
+      host: this.configService.get('email_host'),
+      port: this.configService.get('email_port'),
       secure: false,
       auth: {
         user: this.configService.get('email_user'),
