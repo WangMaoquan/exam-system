@@ -4,6 +4,7 @@ import { AnswerService } from './answer.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthGuard, CommonModule } from '@app/common';
 import { APP_GUARD } from '@nestjs/core';
+import { ExcelModule } from '@app/excel';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { APP_GUARD } from '@nestjs/core';
       },
     ]),
     CommonModule,
+    ExcelModule,
   ],
   controllers: [AnswerController],
   providers: [
