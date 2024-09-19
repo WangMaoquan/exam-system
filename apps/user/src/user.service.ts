@@ -8,6 +8,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UserService {
@@ -58,5 +59,24 @@ export class UserService {
       this.logger.error(e, UserService);
       return null;
     }
+  }
+
+  async login(user: LoginUserDto) {
+    const foundUser = await this.prismaService.user.findUnique({
+      where: {
+        username: user.username,
+      },
+    });
+
+    if (!foundUser) {
+      throw new HttpException('用户不存在', HttpStatus.BAD_REQUEST);
+    }
+
+    if (foundUser.password !== user.password) {
+      throw new HttpException('密码错误', HttpStatus.BAD_REQUEST);
+    }
+
+    delete foundUser.password;
+    return foundUser;
   }
 }
