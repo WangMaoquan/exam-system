@@ -1,6 +1,7 @@
 import { PrismaService } from '@app/prisma';
 import { Inject, Injectable } from '@nestjs/common';
 import { ExamAddDto } from './dto/exam-add.dto';
+import { ExamSaveDto } from './dto/exam-save.dto';
 
 @Injectable()
 export class ExamService {
@@ -43,6 +44,17 @@ export class ExamService {
       },
       data: {
         isDelete: true,
+      },
+    });
+  }
+
+  async save(dto: ExamSaveDto) {
+    return this.prismaService.exam.update({
+      where: {
+        id: dto.id,
+      },
+      data: {
+        content: dto.content,
       },
     });
   }
