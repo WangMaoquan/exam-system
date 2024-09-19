@@ -4,6 +4,8 @@ import { UserService } from './user.service';
 import { RedisModule } from '@app/redis';
 import { EmailModule } from '@app/email';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthGuard, CommonModule } from '@app/common';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -20,8 +22,15 @@ import { JwtModule } from '@nestjs/jwt';
         };
       },
     }),
+    CommonModule,
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [
+    UserService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class UserModule {}
